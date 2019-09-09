@@ -1,0 +1,38 @@
+{
+  "name": "simpleblimp",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "classnames": "^2.2.6",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0",
+    "react-redux": "^7.1.1",
+    "react-router-dom": "^5.0.1",
+    "redux": "^4.0.4",
+    "redux-thunk": "^2.3.0",
+    "reselect": "^4.0.0"
+  },
+  "scripts": {
+    "start": "parcel src/index.html"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "parcel": "^1.12.3",
+    "parcel-bundler": "^1.12.3",
+    "typescript": "^3.6.2"
+  }
+}
