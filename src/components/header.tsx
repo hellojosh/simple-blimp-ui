@@ -15,7 +15,7 @@ function Header({ location: { pathname }}) {
         <NavLink to="/urls" activeClassName="selected" className="UnderlineNav-item">URLs</NavLink>
         <NavLink to="/tables" activeClassName="selected" className="UnderlineNav-item">Tables</NavLink>
         <NavLink to="/security" activeClassName="selected" className="UnderlineNav-item">Security</NavLink>
-        <NavLink to="/settings" activeClassName="selected" className="UnderlineNav-item">Settings</NavLink>
+        <NavLink to="/settings" activeClassName="selected" className="UnderlineNav-item mr-0">Settings</NavLink>
       </div>
     </div>
     <div className="col-3 px-3 text-right">

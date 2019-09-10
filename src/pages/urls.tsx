@@ -5,21 +5,19 @@ import classnames from 'classnames';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 
 import { deleteRoute, updateOrder } from '../store/actions/urls';
+import { filterKeyByValue, filterKeyByValues, getTrueKeys } from '../utilities';
 
 const DEFAULT_METHOD_FILTERS = { get: false, post: false, put: false, delete: false };
 
 const filterUrls = (urls, phrase = '', methods = {}) => {
-  let _phrase = phrase.toLowerCase().trim()
+  let selectedMethods = getTrueKeys(methods)
+  let newUrls = filterKeyByValue(urls, 'route', phrase)
 
-  let _methods = Object.entries(methods).filter(v => v[1]).map(v => v[0])
-      _methods = _methods.length === 0 ? Object.keys(methods) : _methods
+  if (selectedMethods.length > 0) {
+    newUrls = filterKeyByValues(newUrls, 'method', selectedMethods)
+  }
 
-  return urls.filter(url => {
-    let route = url.route.toLowerCase()
-    let method = url.method.toLowerCase()
-
-    return route.indexOf(_phrase) > -1 && _methods.indexOf(method) > -1
-  })
+  return newUrls
 };
 
 function UrlsPage({ urls, deleteRouteAction, updateOrderAction }) {
@@ -32,23 +30,16 @@ function UrlsPage({ urls, deleteRouteAction, updateOrderAction }) {
   };
   const searchPhraseOnChange = e => setSearchPhrase(e.target.value);
   const methodFilterOnClick = method => () => setMethodFilters({ ...methodFilters, [method]: !methodFilters[method] });
-  const deleteOnClick = id => {
-    return () => {
-      deleteRouteAction(id);
-    };
-  };
+  const deleteOnClick = id => () => deleteRouteAction(id);
   const onDragEnd = result => {
-    if (!result.destination) {
-      return;
+    if (result.destination) {
+      updateOrderAction(result.source.index, result.destination.index);
     }
-
-    updateOrderAction(result.source.index, result.destination.index);
   };
-
   const getListStyle = isDraggingOver => ({});
-  const getItemStyle = (isDragging, draggableStyle) => ({ ...draggableStyle });
+  const getItemStyle = (isDragging, draggableStyle) => draggableStyle;
 
-  let _urls = filterUrls(urls, searchPhrase.toLowerCase(), methodFilters)
+  let _urls = filterUrls(urls, searchPhrase, methodFilters)
 
   return <div className="container-lg px-3 py-5">
   	<div className="col-12 px-3">
@@ -118,7 +109,7 @@ function UrlsPage({ urls, deleteRouteAction, updateOrderAction }) {
   </div>;
 }
 
-const mapStateToProps = (state, oenProps) => ({
+const mapStateToProps = state => ({
   urls: state.urls,
 })
 

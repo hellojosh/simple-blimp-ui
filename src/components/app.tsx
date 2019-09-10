@@ -20,6 +20,7 @@ function App() {
         <Route exact path="/" component={LoginPage} />
         <Route exact path="/tables" component={TablesPage} />
         <Route exact path="/tables/create" component={CreateTablePage} />
+        <Route exact path="/tables/:name" component={CreateTablePage} />
         <Route exact path="/urls" component={UrlsPage} />
         <Route exact path="/urls/create" component={CreateUrlPage} />
         <Route exact path="/urls/:id" component={CreateUrlPage} />

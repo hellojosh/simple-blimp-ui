@@ -1,6 +1,6 @@
 import React, { Fragment, useState } from 'react';
 import { Link, Redirect } from "react-router-dom";
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 import classnames from 'classnames';
 
 import { getUrlById } from '../store/selectors';
