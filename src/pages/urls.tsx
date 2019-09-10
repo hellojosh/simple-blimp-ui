@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { Link } from "react-router-dom";
 import { connect } from 'react-redux';
 import classnames from 'classnames';
+import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 
-import { deleteRoute } from '../store/actions/urls';
+import { deleteRoute, updateOrder } from '../store/actions/urls';
 
 const DEFAULT_METHOD_FILTERS = { get: false, post: false, put: false, delete: false };
 
@@ -21,7 +22,7 @@ const filterUrls = (urls, phrase = '', methods = {}) => {
   })
 };
 
-function UrlsPage({ urls, deleteRouteAction }) {
+function UrlsPage({ urls, deleteRouteAction, updateOrderAction }) {
   const [ searchPhrase, setSearchPhrase ] = useState('');
   const [ methodFilters, setMethodFilters ] = useState(DEFAULT_METHOD_FILTERS);
 
@@ -36,6 +37,16 @@ function UrlsPage({ urls, deleteRouteAction }) {
       deleteRouteAction(id);
     };
   };
+  const onDragEnd = result => {
+    if (!result.destination) {
+      return;
+    }
+
+    updateOrderAction(result.source.index, result.destination.index);
+  };
+
+  const getListStyle = isDraggingOver => ({});
+  const getItemStyle = (isDragging, draggableStyle) => ({ ...draggableStyle });
 
   let _urls = filterUrls(urls, searchPhrase.toLowerCase(), methodFilters)
 
@@ -68,23 +79,36 @@ function UrlsPage({ urls, deleteRouteAction }) {
   				<span className="btn-link v-hidden">
   					<i className="fas fa-trash-alt fa-fw"></i>
   				</span>
-          <span className="btn-link v-hidden ml-2">
+          <span className="btn-link v-hidden ml-3">
   					<i className="fas fa-trash-alt fa-fw"></i>
   				</span>
   			</div>
-        { _urls.map(url => <div key={url.id} className="Box-row d-flex flex-items-center text-mono">
-  				<i className="fas fa-bars mr-3"></i>
-  				<div className="col-6">{url.route}</div>
-  				<div className="col-6">{url.method}</div>
-  				<div className="d-flex">
-            <Link to={`/urls/${url.id}`} className="link-gray">
-              <i className="fas fa-edit fa-fw"></i>
-            </Link>
-            <button className="link-gray btn-link ml-3" onClick={deleteOnClick(url.id)}>
-              <i className="fas fa-trash-alt fa-fw"></i>
-            </button>
-          </div>
-  			</div>) }
+        <DragDropContext onDragEnd={onDragEnd}>
+          <Droppable droppableId="urlsDroppable">
+            { (provided, snapshot) => (
+              <div {...provided.droppableProps} ref={provided.innerRef} style={getListStyle(snapshot.isDraggingOver)}>
+                { _urls.map((url, index) => <Draggable key={url.id} draggableId={url.id} index={index}>
+                  { (provided, snapshot) => (
+                    <div key={url.id} className={classnames('Box-row d-flex flex-items-center text-mono', { 'border-0': snapshot.isDragging, 'bg-gray': snapshot.isDragging })} ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} style={getItemStyle(snapshot.isDragging, provided.draggableProps.style )}>
+              				<i className="fas fa-bars mr-3"></i>
+              				<div className="col-6">{url.route}</div>
+              				<div className="col-6">{url.method}</div>
+              				<div className="d-flex">
+                        <Link to={`/urls/${url.id}`} className="link-gray">
+                          <i className="fas fa-edit fa-fw"></i>
+                        </Link>
+                        <button className="link-gray btn-link ml-3" onClick={deleteOnClick(url.id)}>
+                          <i className="fas fa-trash-alt fa-fw"></i>
+                        </button>
+                      </div>
+              			</div>
+                  ) }
+                </Draggable>) }
+                { provided.placeholder }
+              </div>
+            ) }
+          </Droppable>
+        </DragDropContext>
         { _urls.length === 0 && <div className="Box-row d-flex flex-items-center text-mono">
           <i className="fas fa-bars mr-3 v-hidden"></i>
   				<div>No results</div>
@@ -100,6 +124,7 @@ const mapStateToProps = (state, oenProps) => ({
 
 const mapDispatchToProps = dispatch => ({
   deleteRouteAction: id => dispatch(deleteRoute(id)),
+  updateOrderAction: (startIndex, destinationIndex) => dispatch(updateOrder(startIndex, destinationIndex)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(UrlsPage)

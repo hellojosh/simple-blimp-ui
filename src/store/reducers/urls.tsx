@@ -1,4 +1,4 @@
-import { ADD_ROUTE, DELETE_ROUTE, UPDATE_ROUTE } from '../actions/urls';
+import { ADD_ROUTE, DELETE_ROUTE, UPDATE_ROUTE, UPDATE_ORDER } from '../actions/urls';
 
 const DEFAULT_STATE = [
   { id: 1, route: '/v1/people', method: 'GET', sql: 'SELECT * FROM people;' },
@@ -21,6 +21,14 @@ function reducer (state = DEFAULT_STATE, action) {
 
         return v;
       });
+    case UPDATE_ORDER:
+      const { startIndex, destinationIndex } = action.value;
+      const newState = [ ...state ]
+      const [ removed ] = newState.splice(startIndex, 1);
+
+      newState.splice(destinationIndex, 0, removed);
+
+      return newState;
     default:
       return state;
   }
