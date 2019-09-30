@@ -1,6 +1,6 @@
 import { ADD_ROUTE, DELETE_ROUTE, UPDATE_ROUTE, UPDATE_ORDER } from '../actions/urls';
 
-const DEFAULT_STATE = [
+export const DEFAULT_STATE = [
   { id: 1, route: '/v1/people', method: 'GET', sql: 'SELECT * FROM people;' },
   { id: 2, route: '/v1/people', method: 'POST', sql: 'INSERT INTO people;' },
   { id: 4, route: '/v1/people/latest', method: 'GET', sql: 'SELECT TOP 5 * FROM people;' },

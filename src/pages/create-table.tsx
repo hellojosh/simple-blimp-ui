@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useCallback } from 'react';
 import { connect } from 'react-redux';
 import { Link, Redirect } from "react-router-dom";
 import classnames from 'classnames';
@@ -66,6 +66,7 @@ function CreateTablePage({ match, table = DEFAULT_TABLE, createTableAction, dele
     deleteTableAction(table.name);
     setGoBack(true);
   };
+  const setGoBackCallback = useCallback(() => setGoBack(true), []);
 
   if (goBack) {
     return <Redirect to="/tables" />
@@ -105,12 +106,13 @@ function CreateTablePage({ match, table = DEFAULT_TABLE, createTableAction, dele
         <div>
           <button className="btn btn-outline mb-6" onClick={addColumnOnClick}>Add Column</button>
         </div>
-        <div className="d-flex flex-items-center flex-justify-between mb-3">
-          <button className="btn btn-primary" onClick={createOnClick}>
+        <div className="d-flex flex-items-center mb-3">
+          <button className="btn btn-primary mr-4" onClick={createOnClick}>
             { isNewTable && <Fragment>Create</Fragment> }
             { !isNewTable && <Fragment>Update</Fragment> }
           </button>
-          <span className="note">All fields are required</span>
+          <button className="btn-link text-red" onClick={setGoBackCallback}>Cancel</button>
+          <span className="note ml-auto">All fields are required</span>
         </div>
       </div>
     </div>

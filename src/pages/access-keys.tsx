@@ -1,7 +1,17 @@
-import React, { Fragment } from 'react';
+import React, { useReducer } from 'react';
 import { Link } from "react-router-dom";
 
+import KeysReducer, { DEFAULT_STATE } from '../store/reducers/keys';
+import UrlsReducer, { DEFAULT_STATE as URLS_DEFAULT_STATE } from '../store/reducers/urls';
+
 export default function AccessKeysPage() {
+  const [ keysState, keysDispatch ] = useReducer(KeysReducer, DEFAULT_STATE);
+  const [ urlsState ] = useReducer(UrlsReducer, URLS_DEFAULT_STATE);
+  const keySelector = id => urlsState.filter(key => key.id === id)[0];
+  const keyOutput = key => <div key={`url${key.id}`}>
+    <span className="Label Label--outline">{key.method}</span> {key.route}
+  </div>;
+
   return <div className="container-lg px-3 py-5">
   	<div className="col-12 px-3">
   		<div className="d-flex flex-items-center">
@@ -21,36 +31,22 @@ export default function AccessKeysPage() {
   				<div className="col-5 text-bold">Access</div>
   				<i className="fas fa-trash-alt v-hidden"></i>
   			</div>
-  			<div className="Box-row d-flex text-mono lh-default">
+        { keysState.map(key => <div key={key.id} className="Box-row d-flex text-mono lh-default">
   				<div className="col-2">
-  					iPhone App
+  					{key.name}
   				</div>
   				<div className="col-5">
-  					<a href="#">a5s6a6d57d889ddsd7s6dsd98</a>
+            <Link to={`/keys/${key.key}`}>
+      				{key.key}
+      			</Link>
   				</div>
   				<div className="col-5">
-  					<div><span className="Label Label--outline">GET</span> /people</div>
-  					<div><span className="Label Label--outline">POST</span> /people</div>
-  					<div><span className="Label Label--outline">GET</span> /people/:id</div>
+            { key.accessIds.map(id => keyOutput(keySelector(id))) }
   				</div>
   				<a href="#" className="link-gray">
   					<i className="fas fa-trash-alt"></i>
   				</a>
-  			</div>
-  			<div className="Box-row d-flex text-mono lh-default">
-  				<div className="col-2">
-  					Apple TV
-  				</div>
-  				<div className="col-5">
-  					<a href="#">a5s6a6d57d889ddsd7s6dsd98</a>
-  				</div>
-  				<div className="col-5">
-  					<div><span className="Label Label--outline">GET</span> /people</div>
-  				</div>
-  				<a href="#" className="link-gray">
-  					<i className="fas fa-trash-alt"></i>
-  				</a>
-  			</div>
+  			</div>) }
   		</div>
   	</div>
   </div>;

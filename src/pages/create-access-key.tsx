@@ -1,7 +1,13 @@
-import React, { Fragment } from 'react';
+import React, { useReducer } from 'react';
 import { Link } from "react-router-dom";
 
+import KeysReducer, { DEFAULT_STATE } from '../store/reducers/keys';
+
 export default function CreateAccessKey() {
+  const [ keysState, keysDispatch ] = useReducer(KeysReducer, DEFAULT_STATE);
+
+  console.log('keysState', keysState);
+
   return <div className="container-lg px-3 py-5">
   	<div className="col-12 px-3">
   		<h3>Create Access Key</h3>

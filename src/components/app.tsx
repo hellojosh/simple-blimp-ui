@@ -26,6 +26,7 @@ function App() {
         <Route exact path="/urls/:id" component={CreateUrlPage} />
         <Route exact path="/security" component={KeysPage} />
         <Route exact path="/keys/create" component={CreateKeyPage} />
+        <Route exact path="/keys/:id" component={CreateKeyPage} />
         <Route component={FourZeroFour} />
       </Switch>
     </Router>

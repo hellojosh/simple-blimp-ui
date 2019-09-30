@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useCallback } from 'react';
 import { Link, Redirect } from "react-router-dom";
 import { connect } from 'react-redux';
 import classnames from 'classnames';
@@ -48,6 +48,7 @@ function CreateUrlPage({ match, url = DEFAULT_URL, addRouteAction, deleteRouteAc
     deleteRouteAction(url.id);
     setGoBack(true);
   };
+  const setGoBackCallback = useCallback(() => setGoBack(true), []);
 
   if (goBack) {
     return <Redirect to="/urls" />
@@ -77,12 +78,13 @@ function CreateUrlPage({ match, url = DEFAULT_URL, addRouteAction, deleteRouteAc
         <div className="mb-3">
           <textarea className={classnames('form-control col-12 text-mono input-contrast', { 'border-red': sqlError })} rows="10" placeholder="SQL" value={sql} onChange={sqlOnChange}></textarea>
         </div>
-  			<div className="d-flex flex-items-center flex-justify-between mb-3">
-          <button className="btn btn-primary" onClick={createOnClick}>
+  			<div className="d-flex flex-items-center mb-3">
+          <button className="btn btn-primary mr-4" onClick={createOnClick}>
             { isNewRoute && <Fragment>Create</Fragment> }
             { !isNewRoute && <Fragment>Update</Fragment> }
           </button>
-          <span className="note">All fields are required</span>
+          <button className="btn-link text-red" onClick={setGoBackCallback}>Cancel</button>
+          <span className="note ml-auto">All fields are required</span>
         </div>
   		</div>
   	</div>
