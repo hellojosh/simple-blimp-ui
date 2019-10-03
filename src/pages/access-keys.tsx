@@ -34,8 +34,8 @@ export default function AccessKeysPage() {
           </div>
           { filteredKeys.map((key) => (
             <div key={key.id} className="Box-row d-flex text-mono lh-default">
-              <div className="col-3">
-                <Link to={`/keys/${key.id}`}>
+              <div className="col-3 pr-3 flex-shrink-0">
+                <Link to={`/keys/${key.id}`} className="css-truncate css-truncate-target">
                   {key.name}
                 </Link>
               </div>
