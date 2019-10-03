@@ -2,7 +2,7 @@ import React, { useState, useCallback, useMemo } from 'react';
 import { Redirect } from 'react-router-dom';
 import classnames from 'classnames';
 
-import { useStateValue } from '../state';
+import { useStateValue } from '../reducer/state';
 import { CREATE_KEY, UPDATE_KEY, DELETE_KEY } from '../reducer';
 
 interface CreateAccessKeyProps {
@@ -13,13 +13,11 @@ interface CreateAccessKeyProps {
   };
 }
 
-const DEFAULT_KEY = { name: '', key: '', accessIds: [] };
-
 export default function CreateAccessKey({ match }: CreateAccessKeyProps) {
   const [{ keys, urls }, dispatch] = useStateValue();
   const isNewKey = useMemo(() => match.params.id === undefined, [match.params.id]);
   const key = useMemo(
-    () => keys.find((value) => value.id === parseInt(match.params.id, 10)) || DEFAULT_KEY,
+    () => keys.find((value) => value.id === parseInt(match.params.id, 10)) || { name: '', key: '', accessIds: [] },
     [keys, match.params.id],
   );
   const [goBack, setGoBack] = useState(false);

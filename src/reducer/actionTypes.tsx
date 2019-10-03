@@ -1,0 +1,10 @@
+export const DELETE_URL = 'DELETE_URL';
+export const REORDER_URLS = 'REORDER_URLS';
+export const ADD_ROUTE = 'ADD_ROUTE';
+export const UPDATE_ROUTE = 'UPDATE_ROUTE';
+export const DELETE_TABLE = 'DELETE_TABLE';
+export const CREATE_TABLE = 'CREATE_TABLE';
+export const UPDATE_TABLE = 'UPDATE_TABLE';
+export const DELETE_KEY = 'DELETE_KEY';
+export const CREATE_KEY = 'CREATE_KEY';
+export const UPDATE_KEY = 'UPDATE_KEY';

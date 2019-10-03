@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { filterKeyByValue } from '../utilities';
 
-import { useStateValue } from '../state';
+import { useStateValue } from '../reducer/state';
 import { DELETE_TABLE } from '../reducer';
 
 export default function TablesPage() {
@@ -31,10 +31,11 @@ export default function TablesPage() {
           </div>
           { filteredTables.map((table) => (
             <div key={table.name} className="Box-row d-flex flex-items-center text-mono">
-              <div className="col-12">{table.name}</div>
-              <Link to={`/tables/${table.name}`} className="link-gray">
-                <i className="fas fa-edit fa-fw" />
-              </Link>
+              <div className="col-12">
+                <Link to={`/tables/${table.name}`}>
+                  {table.name}
+                </Link>
+              </div>
               <button type="button" className="link-gray btn-link ml-3" onClick={() => dispatch({ type: DELETE_TABLE, name: table.name })}>
                 <i className="fas fa-trash-alt fa-fw" />
               </button>

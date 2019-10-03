@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { Redirect } from 'react-router-dom';
 import classnames from 'classnames';
 
-import { useStateValue } from '../state';
+import { useStateValue } from '../reducer/state';
 import { DELETE_TABLE, CREATE_TABLE, UPDATE_TABLE } from '../reducer';
 
 interface CreateTablePageProps {
@@ -10,20 +10,19 @@ interface CreateTablePageProps {
 }
 
 const DEFAULT_COLUMN = {
-  name: '', type: '', hasNameError: false, hasTypeError: false, generated: false,
+  name: '', type: '', hasNameError: false, hasTypeError: false, generated: false, uiIndex: 1,
 };
-const DEFAULT_TABLE = { name: '', columns: [{ ...DEFAULT_COLUMN }] };
 
 export default function CreateTablePage({ match }: CreateTablePageProps) {
   const isNewTable = useMemo(() => match.params.name === undefined, [match.params.name]);
   const [{ tables }, dispatch] = useStateValue();
   const table = useMemo(
-    () => tables.find((value) => value.name.toLowerCase() === match.params.name) || DEFAULT_TABLE,
+    () => tables.find((value) => value.name.toLowerCase() === match.params.name) || { name: '', columns: [{ ...DEFAULT_COLUMN }] },
     [tables, match.params.name],
   );
   const [tableName, setTableName] = useState(table.name);
   const [tableNameHasError, setTableNameHasError] = useState(false);
-  const [columns, setColumns] = useState(table.columns);
+  const [columns, setColumns] = useState(table.columns.map((c, i) => ({ ...c, uiIndex: i })));
   const [goBack, setGoBack] = useState(false);
 
   const columnOnChange = (index, column) => ({ target: { value } }) => {
@@ -89,7 +88,7 @@ export default function CreateTablePage({ match }: CreateTablePageProps) {
             </div>
           </div>
           { columns.map((column, index) => (
-            <div key={column.name} className="d-flex mb-3">
+            <div key={column.uiIndex} className="d-flex mb-3">
               <input className={classnames('form-control col-12', { 'border-red': column.hasNameError, 'text-gray-light bg-gray-light': column.generated })} type="text" placeholder="Name" value={column.name} onChange={columnOnChange(index, 'name')} disabled={column.generated} />
               <select className={classnames('form-select ml-2', { 'border-red': column.hasTypeError, 'text-gray-light bg-gray-light': column.generated })} value={column.type} onChange={columnOnChange(index, 'type')} disabled={column.generated}>
                 <option value="">Type</option>
@@ -106,7 +105,7 @@ export default function CreateTablePage({ match }: CreateTablePageProps) {
             </div>
           )) }
           <div>
-            <button type="button" className="btn btn-outline mb-6" onClick={() => setColumns(columns.concat({ ...DEFAULT_COLUMN }))}>Add Column</button>
+            <button type="button" className="btn btn-outline mb-6" onClick={() => setColumns(columns.concat({ ...DEFAULT_COLUMN, uiIndex: Math.max(...columns.map((c) => c.uiIndex), 0) + 1 }))}>Add Column</button>
           </div>
           <div className="d-flex flex-items-center flex-justify-between mb-3">
             <div>

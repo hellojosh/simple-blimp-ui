@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import classnames from 'classnames';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 
-import { useStateValue } from '../state';
+import { useStateValue } from '../reducer/state';
 import { filterUrls } from '../utilities';
 import { DELETE_URL, REORDER_URLS } from '../reducer';
 
@@ -75,12 +75,13 @@ export default function UrlsPage() {
                       { (innerProvided, innerSnapshot) => (
                         <div key={url.id} className={classnames('Box-row d-flex flex-items-center text-mono', { 'border-0': innerSnapshot.isDragging, 'bg-gray': innerSnapshot.isDragging })} ref={innerProvided.innerRef} {...innerProvided.draggableProps} {...innerProvided.dragHandleProps} style={innerProvided.draggableProps.style}>
                           <i className="fas fa-bars mr-3" />
-                          <div className="col-6">{url.route}</div>
+                          <div className="col-6">
+                            <Link to={`/urls/${url.id}`}>
+                              {url.route}
+                            </Link>
+                          </div>
                           <div className="col-6">{url.method}</div>
                           <div className="d-flex">
-                            <Link to={`/urls/${url.id}`} className="link-gray">
-                              <i className="fas fa-edit fa-fw" />
-                            </Link>
                             <button type="button" className="link-gray btn-link ml-3" onClick={() => dispatch({ type: DELETE_URL, id: url.id })}>
                               <i className="fas fa-trash-alt fa-fw" />
                             </button>

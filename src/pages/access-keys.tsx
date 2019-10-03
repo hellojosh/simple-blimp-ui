@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 
-import { useStateValue } from '../state';
+import { useStateValue } from '../reducer/state';
 import { DELETE_KEY } from '../reducer';
 import { filterKeyByValue } from '../utilities';
 
@@ -35,21 +35,18 @@ export default function AccessKeysPage() {
           { filteredKeys.map((key) => (
             <div key={key.id} className="Box-row d-flex text-mono lh-default">
               <div className="col-2">
-                {key.name}
-              </div>
-              <div className="col-5">
                 <Link to={`/keys/${key.id}`}>
-                  {key.key}
+                  {key.name}
                 </Link>
               </div>
+              <div className="col-5">{key.key}</div>
               <div className="col-5">
                 { key.accessIds.map((accessId) => {
                   const { method, route } = urlSelector(accessId);
 
                   return (
                     <div key={`url${accessId}`}>
-                      <span className="Label Label--outline">{method}</span>
-
+                      <span className="Label Label--outline mr-1">{method}</span>
                       {route}
                     </div>
                   );
@@ -63,9 +60,9 @@ export default function AccessKeysPage() {
             </div>
           )) }
           { filteredKeys.length === 0 && (
-          <div className="Box-row d-flex flex-items-center text-mono">
-          No Results
-          </div>
+            <div className="Box-row d-flex flex-items-center text-mono">
+              No Results
+            </div>
           ) }
         </div>
       </div>

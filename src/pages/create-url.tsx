@@ -2,20 +2,18 @@ import React, { useState, useMemo } from 'react';
 import { Redirect } from 'react-router-dom';
 import classnames from 'classnames';
 
-import { useStateValue } from '../state';
+import { useStateValue } from '../reducer/state';
 import { ADD_ROUTE, UPDATE_ROUTE, DELETE_URL } from '../reducer';
 
 interface CreateUrlPageProps {
   match: object;
 }
 
-const DEFAULT_URL = { route: '', sql: '', method: '' };
-
 export default function CreateUrlPage({ match }: CreateUrlPageProps) {
   const [{ urls }, dispatch] = useStateValue();
   const isNewRoute = useMemo(() => match.params.id === undefined, [match.params.id]);
   const url = useMemo(
-    () => urls.find((v) => v.id === parseInt(match.params.id, 10)) || DEFAULT_URL,
+    () => urls.find((v) => v.id === parseInt(match.params.id, 10)) || { route: '', sql: '', method: '' },
     [urls, match.params.id],
   );
   const [route, setRoute] = useState(url.route);
