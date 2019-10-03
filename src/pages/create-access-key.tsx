@@ -48,7 +48,7 @@ export default function CreateAccessKey({ match }: CreateAccessKeyProps) {
     }
 
     if (isNewKey) {
-      dispatch({ type: CREATE_KEY, value: { key: 'javbsdkjhabsdkjhavsd', name, accessIds } });
+      dispatch({ type: CREATE_KEY, value: { name, accessIds } });
     } else {
       dispatch({ type: UPDATE_KEY, value: { ...key, name, accessIds } });
     }

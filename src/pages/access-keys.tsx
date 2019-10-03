@@ -27,20 +27,20 @@ export default function AccessKeysPage() {
         </div>
         <div className="Box Box--condensed">
           <div className="Box-header Box-header--gray d-flex flex-items-center">
-            <div className="col-2 text-bold">Name</div>
+            <div className="col-3 text-bold">Name</div>
             <div className="col-5 text-bold">Key</div>
-            <div className="col-5 text-bold">Access</div>
+            <div className="col-4 text-bold">Access</div>
             <i className="fas fa-trash-alt v-hidden" />
           </div>
           { filteredKeys.map((key) => (
             <div key={key.id} className="Box-row d-flex text-mono lh-default">
-              <div className="col-2">
+              <div className="col-3">
                 <Link to={`/keys/${key.id}`}>
                   {key.name}
                 </Link>
               </div>
               <div className="col-5">{key.key}</div>
-              <div className="col-5">
+              <div className="col-4">
                 { key.accessIds.map((accessId) => {
                   const { method, route } = urlSelector(accessId);
 
@@ -53,7 +53,7 @@ export default function AccessKeysPage() {
                 }) }
               </div>
               <div>
-                <button type="button" className="link-gray btn-link ml-3" onClick={() => dispatch({ type: DELETE_KEY, id: key.id })}>
+                <button type="button" className="link-gray btn-link" onClick={() => dispatch({ type: DELETE_KEY, id: key.id })}>
                   <i className="fas fa-trash-alt fa-fw" />
                 </button>
               </div>

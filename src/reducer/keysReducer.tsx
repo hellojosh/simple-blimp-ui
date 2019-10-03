@@ -1,3 +1,5 @@
+import uuid from 'uuid/v1';
+
 import { DELETE_KEY, CREATE_KEY, UPDATE_KEY } from './actionTypes';
 
 export default function keysReducer(state, action) {
@@ -10,6 +12,7 @@ export default function keysReducer(state, action) {
         {
           id: Math.max(...state.map((key) => key.id), 0) + 1,
           ...action.value,
+          key: uuid(),
         },
       ];
     case UPDATE_KEY:
