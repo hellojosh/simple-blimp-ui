@@ -2,7 +2,9 @@ import React from 'react';
 import { NavLink, Link, withRouter } from 'react-router-dom';
 
 interface HeaderProps {
-  location: object;
+  location: {
+    pathname: string
+  };
 }
 
 function Header({ location: { pathname } }: HeaderProps) {
@@ -13,7 +15,7 @@ function Header({ location: { pathname } }: HeaderProps) {
   return (
     <div className="border-bottom px-3 d-flex flex-items-center bg-gray">
       <div className="col-3 px-3">
-        <h4>Simple <span className="text-normal">Blimp</span></h4>
+        <h4>Simple Blimp</h4>
       </div>
       <div className="col-6">
         <div className="UnderlineNav-body d-flex flex-justify-center">

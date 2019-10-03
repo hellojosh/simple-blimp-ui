@@ -3,13 +3,13 @@ import { Link } from 'react-router-dom';
 
 import { useStateValue } from '../reducer/state';
 import { DELETE_KEY } from '../reducer';
-import { filterKeyByValue } from '../utilities';
+import { fullSearchByKeys } from '../utilities';
 
 export default function AccessKeysPage() {
   const [{ keys, urls }, dispatch] = useStateValue();
   const [searchPhrase, setSearchPhrase] = useState('');
   const urlSelector = useCallback((id) => urls.find((url) => url.id === id), [urls]);
-  const filteredKeys = useMemo(() => filterKeyByValue(keys, 'name', searchPhrase), [keys, searchPhrase]);
+  const filteredKeys = useMemo(() => fullSearchByKeys(keys, ['name', 'key'], searchPhrase), [keys, searchPhrase]);
 
   return (
     <div className="container-lg px-3 py-5">

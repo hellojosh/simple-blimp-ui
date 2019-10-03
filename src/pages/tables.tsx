@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { filterKeyByValue } from '../utilities';
+import { fullSearchByKeys } from '../utilities';
 
 import { useStateValue } from '../reducer/state';
 import { DELETE_TABLE } from '../reducer';
@@ -8,8 +8,7 @@ import { DELETE_TABLE } from '../reducer';
 export default function TablesPage() {
   const [{ tables }, dispatch] = useStateValue();
   const [searchPhrase, setSearchPhrase] = useState('');
-
-  const filteredTables = useMemo(() => filterKeyByValue(tables, 'name', searchPhrase), [tables, searchPhrase]);
+  const filteredTables = useMemo(() => fullSearchByKeys(tables, ['name'], searchPhrase), [tables, searchPhrase]);
 
   return (
     <div className="container-lg px-3 py-5">
@@ -42,9 +41,9 @@ export default function TablesPage() {
             </div>
           )) }
           { filteredTables.length === 0 && (
-          <div className="Box-row d-flex flex-items-center text-mono">
-          No Results
-          </div>
+            <div className="Box-row d-flex flex-items-center text-mono">
+              No Results
+            </div>
           ) }
         </div>
       </div>

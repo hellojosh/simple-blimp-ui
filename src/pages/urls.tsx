@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 
 import { useStateValue } from '../reducer/state';
-import { filterUrls } from '../utilities';
+import { fullSearchByKeys, filterKeyByValues } from '../utilities';
 import { DELETE_URL, REORDER_URLS } from '../reducer';
 
 export default function UrlsPage() {
@@ -14,12 +14,26 @@ export default function UrlsPage() {
   const [postFilter, setPostFilter] = useState(false);
   const [putFilter, setPutFilter] = useState(false);
   const [deleteFilter, setDeleteFilter] = useState(false);
-  const methodFilters = useMemo(() => ({
-    get: getFilter, post: postFilter, put: putFilter, delete: deleteFilter,
-  }), [getFilter, postFilter, putFilter, deleteFilter]);
   const filteredUrls = useMemo(
-    () => filterUrls(urls, searchPhrase, methodFilters),
-    [urls, searchPhrase, methodFilters],
+    () => {
+      let newUrls = fullSearchByKeys(urls, ['route', 'method'], searchPhrase);
+
+      if (newUrls.length > 0) {
+        const selectedMethods = [
+          getFilter ? 'get' : null,
+          postFilter ? 'post' : null,
+          putFilter ? 'put' : null,
+          deleteFilter ? 'delete' : null,
+        ].filter((v) => !!v);
+
+        if (selectedMethods.length > 0) {
+          newUrls = filterKeyByValues(newUrls, 'method', selectedMethods);
+        }
+      }
+
+      return newUrls;
+    },
+    [urls, searchPhrase, getFilter, postFilter, putFilter, deleteFilter],
   );
   const resetClick = useCallback(() => {
     setSearchPhrase('');

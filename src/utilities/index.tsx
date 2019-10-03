@@ -1,22 +1,21 @@
-export const filterKeyByValue = (array, key, value) => {
-  const regex = new RegExp(value.trim(), 'gi');
+export const getValuesForKeys = (object, keys) => Object.entries(object)
+  .filter((entry) => keys.indexOf(entry[0]) > -1)
+  .map(([, value]) => value);
 
-  return array.filter((v) => regex.test(v[key]));
+export const filterKeyByValues = (array, key, values) => {
+  const newValues = values.map((value) => value.toLowerCase());
+
+  return array.filter((item) => newValues.indexOf(item[key].toLowerCase()) > -1);
 };
 
-export const filterKeyByValues = (array, key, values) => (
-  array.filter((v) => values.indexOf(v[key].toLowerCase()) > -1)
-);
+export const fullSearchByKeys = (array, keys, value) => {
+  const newValue = value.trim().toLowerCase();
 
-export const getTrueKeys = object => Object.entries(object).filter((v) => v[1]).map((v) => v[0]);
-
-export const filterUrls = (urls = [], phrase = '', methods = {}) => {
-  const selectedMethods = getTrueKeys(methods);
-  let newUrls = filterKeyByValue(urls, 'route', phrase);
-
-  if (selectedMethods.length > 0) {
-    newUrls = filterKeyByValues(newUrls, 'method', selectedMethods);
-  }
-
-  return newUrls;
+  return array.map((item, index) => ({
+    index,
+    value: getValuesForKeys(item, keys).join('').toLowerCase(),
+  }))
+    .filter((v) => v.value.indexOf(newValue) > -1)
+    .map((v) => v.index)
+    .map((v) => array[v]);
 };
