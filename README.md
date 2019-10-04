@@ -1,8 +1,8 @@
 # Simple Blimp UI
 
-Simple Blimp is a concept idea for a CMS that let's users create APIs by giving them tools to create database tables, API endpoints and security keys.
+Simple Blimp is an idea for a CMS that let's users create APIs by giving them tools to create database tables, API endpoints and security keys.
 
-This is a proof-of-concept UI for this concept CMS.
+This is a proof-of-concept UI for this CMS.
 
 ## Get Started
 
@@ -15,4 +15,4 @@ You don't need a login. Just click the 'Sign In' button.
 
 ## Future
 
-Since this is a proof-of-concept there is a lot of work that can be done. I will be playing with others features on the future.
+Since this is a proof-of-concept there is a lot of work that can be done. I will be playing with others features in the future.
